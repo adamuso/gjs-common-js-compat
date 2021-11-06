@@ -54,6 +54,12 @@
     }
 
     function requireJsFile(file: File): object {
+        const existingModule = pathToModuleMap.get(file.get_path())
+
+        if (existingModule) {
+            return existingModule;
+        }
+
         const parentDir = file.get_parent();
         const containerDir = parentDir.get_parent();
         const importer = getImporter(containerDir.get_path(), parentDir.get_basename());
@@ -63,7 +69,9 @@
             module = module.substr(0, module.length - 3);
         }
 
-        return requireModuleFromImporter(importer, module);
+        const result = requireModuleFromImporter(importer, module);
+        pathToModuleMap.set(file.get_path(), result);
+        return result;
     }
 
     function requireLoadIndex(dir: File): object | null {
@@ -264,7 +272,7 @@
         return null;
     }
         
-    function require(path: string) {
+    (globalThis as any).require = function (path: string) {
         path = path.trim();
         let dir: File | null = null;
 
@@ -361,16 +369,5 @@
 
         // 7. THROW "not found"
         throw new Error(`Module not found ${path}.` + (innerError ? `\n${innerError.stack ?? innerError.toString()}` : ""));
-    }
-
-    (globalThis as any).require = function(path: string) {
-        const existingExports = pathToModuleMap.get(path);
-        if (existingExports) {
-            return existingExports;
-        }
-
-        const exports = require(path);
-        pathToModuleMap.set(path, exports);
-        return exports;
     }
 })();
