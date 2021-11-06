@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "noImplicitAny": true,
+        "lib": ["ES2018"],
+        "outDir": "dist",
+        "declaration": true
+    },
+    "include": ["src/"]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "gjs-common-js-compat",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/commonjs_compat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc --watch",
+    "build": "tsc",
+    "system-install": "mkdir -p /usr/local/share/gjs-1.0 && cp dist/commonjs_compat.js /usr/local/share/gjs-1.0/commonjs_compat.js",
+    "system-uninstall": "rm /usr/local/share/gjs-1.0/commonjs_compat.js"
+  },
+  "author": "Adam Ogiba",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
+}
